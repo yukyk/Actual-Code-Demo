@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notebook App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>📔 Smart Notes</h1>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <input type="text" id="title" placeholder="Title your note..." required>
+      <textarea id="description" placeholder="Write your note here..." rows="4" required></textarea>
+      <input type="date" id="date">
+      <button id="addNoteBtn">➕ Save Note</button>
+    </section>
+
+    <section class="search-section">
+      <input type="text" id="searchTitle" placeholder="🔍 Search notes by title">
+      <p id="noteCount">Showing 0 notes</p>
+    </section>
+
+    <section id="notesContainer" class="notes-container"></section>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ using CRUD CRUD</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
