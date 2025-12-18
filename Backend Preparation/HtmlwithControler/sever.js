@@ -1,11 +1,18 @@
 const express = require("express");
-const productRoutes = require("./Routes/productRoutes");
-
 const app = express();
-const PORT = 4000;
 
-app.use("/api", productRoutes);
+const errorHandler = require("./middleware/errorHandler");
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.use(express.json());
+
+// Routes
+app.use("/users", require("./Routes/userRoutes"));
+app.use("/products", require("./Routes/productRoutes"));
+app.use("/cart", require("./Routes/cartRoutes"));
+
+// Centralized Error Handler (ALWAYS LAST)
+app.use(errorHandler);
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
