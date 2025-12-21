@@ -15,19 +15,45 @@ connection.connect((err) => {
     }
     console.log("Connection established successfully.");
 
-    const creationQuery = `create table students(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(20) NOT NULL,
-        email VARCHAR(20)
-    )`
-    connection.execute(creationQuery, (err) => {
-        if (err) {
-            console.log("Error creating table:", err.message);
-            connection.end();
-            return; ''
-        }
-        console.log("Table created successfully.");
-    });
+    const usersTable = `
+        CREATE TABLE Users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255)
+        )
+    `;
+
+    const busesTable = `
+        CREATE TABLE Buses (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            busNumber VARCHAR(50),
+            totalSeats INT,
+            availableSeats INT
+        )
+    `;
+
+    const bookingsTable = `
+        CREATE TABLE Bookings (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            seatNumber INT
+        )
+    `;
+
+    const paymentsTable = `
+        CREATE TABLE Payments (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            amountPaid INT,
+            paymentStatus VARCHAR(50)
+        )
+    `;
+
+    connection.execute(usersTable);
+    connection.execute(busesTable);
+    connection.execute(bookingsTable);
+    connection.execute(paymentsTable);
+
+   
+    console.log("Table created successfully.");
 });
 
 app.get('/', (req, res) => {
