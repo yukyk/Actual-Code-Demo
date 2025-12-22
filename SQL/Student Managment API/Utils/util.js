@@ -1,35 +1,58 @@
-const mysql = require('mysql2');
+const {Sequelize} = require('sequelize');
 
-const db = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'Yusufgitsharp@25321453',
-    database: 'testdb'
+const sequelize = new Sequelize('testdb', 'root', 'Yusufgitsharp@25321453', { 
+    'host': '127.0.0.1'
+    , 'dialect': 'mysql'
 });
 
-db.connect((err) => {
-    if (err) {
-        console.error('Database connection failed:', err.message);
-        return;
-    }
-    console.log('Database connected successfully');
 
-    const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS student (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255),
-            email VARCHAR(255) UNIQUE,
-            age INT
-        )
-    `;
+ (async()=> { try{
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.'); 
 
-    db.execute(createTableQuery, (err) => {
-        if (err) {
-            console.error('Error creating students table:', err.message);
-        } else {
-            console.log('Students table ready');
-        }
-    });
-});
+} catch(err){
+    console.log(err);
+}})();
 
-module.exports = db;
+module.exports = sequelize;
+
+
+
+
+
+
+// const mysql = require('mysql2');
+
+// const db = mysql.createConnection({
+//     host: '127.0.0.1',
+//     user: 'root',
+//     password: 'Yusufgitsharp@25321453',
+//     database: 'testdb'
+// });
+
+// db.connect((err) => {
+//     if (err) {
+//         console.error('Database connection failed:', err.message);
+//         return;
+//     }
+//     console.log('Database connected successfully');
+
+//     const createTableQuery = `
+//         CREATE TABLE IF NOT EXISTS student (
+//             id INT AUTO_INCREMENT PRIMARY KEY,
+//             name VARCHAR(255),
+//             email VARCHAR(255) UNIQUE,
+//             age INT
+//         )
+//     `;
+
+//     db.execute(createTableQuery, (err) => {
+//         if (err) {
+//             console.error('Error creating students table:', err.message);
+//         } else {
+//             console.log('Students table ready');
+//         }
+//     });
+// });
+
+// module.exports = db;
