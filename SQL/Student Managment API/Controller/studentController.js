@@ -1,10 +1,12 @@
 const db = require('../Utils/util');
 const studentModel = require('../models/studentTables');
+const IdentityCard = require('../models/identitycard');
 
 
 
 
 const addStudent = async (req, res) =>{
+     
     try{
         const {name, email} = req.body;
         const student = await studentModel.create({
@@ -16,6 +18,21 @@ const addStudent = async (req, res) =>{
         res.status(500).send("Error adding entry to the database.");  
     }
 } 
+
+const addingValuestoStudentandIdentityCard = async (req, res) =>{
+    try{
+        const student = await studentModel.create(req.body.student);
+        const idCard = await IdentityCard.create({
+            ... req.body.IdentityCard,
+            StudentId:student.id 
+        });
+        res.status(201).json({student, idCard})
+        
+
+     } catch(err){ 
+        res.status(500).json({error: err.message});
+     }
+};
 
 const getAllStudents = (req, res) => {
     const query = 'SELECT * FROM student';
@@ -96,5 +113,6 @@ module.exports = {
     getAllStudents,
     getStudentById,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    addingValuestoStudentandIdentityCard
 };
