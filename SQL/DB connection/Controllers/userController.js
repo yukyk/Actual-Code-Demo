@@ -1,4 +1,5 @@
-const User = require('../Models/userModel');
+const { User, Booking, Bus } = require('../Models');
+
 
 const addUser = async (req, res) => {
   try {
@@ -9,12 +10,40 @@ const addUser = async (req, res) => {
   }
 };
 
+
 const getUsers = async (req, res) => {
-  const users = await User.findAll();
-  res.json(users);
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-module.exports ={
-    addUser,
-    getUsers
-}
+
+const getUserBookings = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const bookings = await Booking.findAll({
+      where: { UserId: userId },
+      attributes: ['id', 'seatNumber'],
+      include: [
+        {
+          model: Bus,
+          attributes: ['busNumber']
+        }
+      ]
+    });
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = {
+  addUser,
+  getUsers,
+  getUserBookings
+};

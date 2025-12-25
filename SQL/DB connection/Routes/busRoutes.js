@@ -3,6 +3,6 @@ const router = express.Router();
 const busController = require('../Controllers/busController');
 
 router.post('/', busController.addBus);
-router.get('/available/:seats', busController.getAvailableBuses);
+router.get('/:id/booking', busController.getBusBookings);
 
 module.exports = router;
