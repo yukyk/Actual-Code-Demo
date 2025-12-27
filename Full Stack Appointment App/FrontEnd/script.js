@@ -1,59 +1,86 @@
-const API_URL = "http://localhost:3000/users";
+const API_URL = "http://localhost:3000/expenses";
 
-const userForm = document.getElementById("userForm");
-const userList = document.getElementById("userList");
+const expenseForm = document.getElementById("expenseForm");
+const expenseList = document.getElementById("expenseList");
 
+// Track currently editing expense
+let editExpenseId = null;
 
-userForm.addEventListener("submit", async (e) => {
+// Add or update expense
+expenseForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const description = document.getElementById("description").value.trim();
+    const category = document.getElementById("category").value.trim();
+
+    if (!amount || isNaN(amount)) return alert("Enter a valid amount");
+    if (!description) return alert("Description cannot be empty");
+    if (!category) return alert("Category cannot be empty");
 
     try {
-        await axios.post(API_URL, {
-            name: name,
-            email: email
-        });
+        if (editExpenseId) {
+            // Update existing expense
+            await axios.put(`${API_URL}/${editExpenseId}`, { amount, description, category });
+            editExpenseId = null;
+            expenseForm.querySelector("button").textContent = "Add Expense";
+        } else {
+            // Add new expense
+            await axios.post(API_URL, { amount, description, category });
+        }
 
-        userForm.reset();
-        fetchUsers(); 
+        expenseForm.reset();
+        fetchExpenses();
     } catch (err) {
-        alert("Error adding user");
+        alert(err.response?.data?.error || "Error adding/updating expense");
     }
 });
 
-
-const fetchUsers = async () => {
+// Fetch all expenses
+const fetchExpenses = async () => {
     try {
         const response = await axios.get(API_URL);
-        const users = response.data;
+        const expenses = response.data;
 
-        userList.innerHTML = "";
+        expenseList.innerHTML = "";
 
-        users.forEach(user => {
+        expenses.forEach(expense => {
             const li = document.createElement("li");
             li.innerHTML = `
-                ${user.name} (${user.email})
-                <button onclick="deleteUser(${user.id})">Delete</button>
+                $${expense.amount.toFixed(2)} - ${expense.description} (${expense.category})
+                <button onclick="editExpense(${expense.id}, '${expense.amount}', '${expense.description}', '${expense.category}')">Edit</button>
+                <button onclick="deleteExpense(${expense.id}, this)">Delete</button>
             `;
-            userList.appendChild(li);
+            expenseList.appendChild(li);
         });
 
     } catch (err) {
-        console.log("Error fetching users");
+        console.log("Error fetching expenses");
     }
 };
 
+// Delete expense
+const deleteExpense = async (id, btn) => {
+    if (!confirm("Are you sure you want to delete this expense?")) return;
 
-fetchUsers();
-
-const deleteUser = async (id) => {
     try {
         await axios.delete(`${API_URL}/${id}`);
-        fetchUsers();
+        // Remove the parent li element instantly
+        btn.parentElement.remove();
     } catch (err) {
-        alert("Error deleting user");
+        alert(err.response?.data?.message || "Error deleting expense");
     }
 };
 
+// Edit expense
+const editExpense = (id, amount, description, category) => {
+    document.getElementById("amount").value = amount;
+    document.getElementById("description").value = description;
+    document.getElementById("category").value = category;
+
+    editExpenseId = id;
+    expenseForm.querySelector("button").textContent = "Update Expense";
+};
+
+// Initial fetch
+fetchExpenses();
