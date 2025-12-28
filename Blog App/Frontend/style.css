@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: #0f172a;
+  color: #e5e7eb;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.form-panel {
+  width: 320px;
+  padding: 20px;
+  background: #020617;
+  border-right: 1px solid #1e293b;
+}
+
+.form-panel h2 {
+  margin-bottom: 15px;
+}
+
+.form-panel input,
+.form-panel textarea,
+.form-panel button {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+.form-panel button {
+  background: #38bdf8;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.blog-area {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  overflow-y: auto;
+}
+
+.blog-card {
+  background: #020617;
+  border-radius: 12px;
+  padding: 15px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.blog-card:hover {
+  transform: scale(1.02);
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blog-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.blog-author {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.blog-content {
+  display: none;
+  margin-top: 12px;
+}
+
+.blog-card.active .blog-content {
+  display: block;
+}
+
+.comment {
+  background: #1e293b;
+  padding: 6px;
+  margin-top: 6px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment button {
+  background: transparent;
+  color: #f87171;
+  border: none;
+  cursor: pointer;
+}
+.expand-btn {
+  background: transparent;
+  color: #38bdf8;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
